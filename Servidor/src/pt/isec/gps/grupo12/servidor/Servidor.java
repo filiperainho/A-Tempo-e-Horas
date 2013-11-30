@@ -11,13 +11,12 @@ import pt.isec.gps.grupo12.servidor.Pedidos.GestorPedidos;
 import pt.isec.gps.grupo12.servidor.Utilizadores.MemberShip;
 
 public class Servidor {
-	public static final int PORTO_SERVIDOR = 1111;
-	private static Servidor Servidor_INSTANCE = null;
+	private static Servidor SERVIDOR_INSTANCE = null;
 	private UDPservidor socket;
 	
 	public Servidor(){
 		try {
-			this.socket = new UDPservidor(new DatagramSocket(PORTO_SERVIDOR));
+			this.socket = new UDPservidor(new DatagramSocket(Constantes.PORTO_SERVIDOR));
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -79,9 +78,9 @@ public class Servidor {
 	}
 	
 	public static synchronized Servidor getInstance(){
-    	if(Servidor_INSTANCE == null){
-    		Servidor_INSTANCE = new Servidor();
+    	if(SERVIDOR_INSTANCE == null){
+    		SERVIDOR_INSTANCE = new Servidor();
     	}
-    	return Servidor_INSTANCE;
+    	return SERVIDOR_INSTANCE;
     }
 }
