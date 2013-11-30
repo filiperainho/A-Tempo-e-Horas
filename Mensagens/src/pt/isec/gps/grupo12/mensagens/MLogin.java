@@ -25,10 +25,7 @@ public class MLogin extends Mensagem {
     public String getPass() {
         return pass;
     }
-    public boolean isDoingLogin(){
+    public boolean loginState(){
     	return login;
-    }
-    public boolean isDoingLogout(){
-    	return !login;
     }
 }

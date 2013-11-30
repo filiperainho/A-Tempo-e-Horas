@@ -17,9 +17,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import pt.isec.gps.grupo12.mensagens.Constantes;
+
 
 public class UDPcliente {
-    public static final int BUFFER_SIZE = 3000;
     private DatagramSocket socket;
     private InetAddress ip;
     private int porto;
@@ -31,7 +32,7 @@ public class UDPcliente {
     }
 
     public DatagramPacket read() throws IOException{
-        byte[] recbuf = new byte[BUFFER_SIZE];
+        byte[] recbuf = new byte[Constantes.BUFFER_SIZE];
         DatagramPacket receivePacket = new DatagramPacket(recbuf, recbuf.length);
         socket.receive(receivePacket);
         return receivePacket;

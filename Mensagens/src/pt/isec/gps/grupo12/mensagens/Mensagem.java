@@ -8,6 +8,8 @@
 
 package pt.isec.gps.grupo12.mensagens;
 
+import java.io.Serializable;
 
-public abstract class Mensagem {
+
+public abstract class Mensagem implements Serializable{
 }

@@ -12,13 +12,16 @@ import java.util.List;
 
 public class Pedido {
     private long idPedido;
+    private String corRGB;
     private String remetente;
     private List<String> naoResponderam;
     private List<String> responderam;
     private List<String> offline;
     private List<String> ignoraramMensagem;
     private int sinalizacoes;
-    public Pedido(long IdPedido, String remetente, List<String> naoResponderam) {
+    private boolean isDone;
+    
+    public Pedido(long IdPedido, String remetente, List<String> naoResponderam, String corRGB) {
 
     }
 
@@ -49,14 +52,21 @@ public class Pedido {
     public long getSinalizacoes() {
         return sinalizacoes;
     }
+    
+    public String getCorRGB(){
+    	return corRGB;
+    }
 
-    public void addToResponderam(String username) {
+    public void addToResponderam(String username, boolean resposta) {
     }
 
     public void addToOffline(String username) {
     }
 
     public void addToIgnoraram(String username) {
+    }
+    public boolean getIsDone(){
+    	return false;
     }
 
     public void incrementeSinalizacoes() {
