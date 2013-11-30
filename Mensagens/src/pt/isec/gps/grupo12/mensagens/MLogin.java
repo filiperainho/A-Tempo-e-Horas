@@ -9,11 +9,13 @@ package pt.isec.gps.grupo12.mensagens;
 
 
 public class MLogin extends Mensagem {
+	private boolean login;
     private String nome;
     private String pass;
-    public void MLogin(String nome, String pass) {
+    public void MLogin(String nome, String pass, boolean login) {
         this.nome = nome;
         this.pass = pass;
+        this.login = login;
     }
 
     public String getNome() {
@@ -22,5 +24,11 @@ public class MLogin extends Mensagem {
 
     public String getPass() {
         return pass;
+    }
+    public boolean isDoingLogin(){
+    	return login;
+    }
+    public boolean isDoingLogout(){
+    	return !login;
     }
 }

@@ -9,12 +9,10 @@ package pt.isec.gps.grupo12.cliente;
 
 import pt.isec.gps.grupo12.mensagens.MEnviarCor;
 import pt.isec.gps.grupo12.mensagens.MLogin;
-import pt.isec.gps.grupo12.mensagens.MRelatorio;
 
 
 
 public interface EnviarMensagem {
-    public abstract void receberRelatorio(MRelatorio relatorio);
-    public abstract void receberEstadoLogin(MLogin login);
-    public abstract void receberCor(MEnviarCor cor);
+    public abstract void enviaEstadoLogin(MLogin login);
+    public abstract void enviaCor(MEnviarCor cor);
 }
