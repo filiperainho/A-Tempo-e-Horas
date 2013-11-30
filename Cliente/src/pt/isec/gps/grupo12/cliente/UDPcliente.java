@@ -24,7 +24,7 @@ public class UDPcliente {
     private InetAddress ip;
     private int porto;
     
-    public void UDPservidor(DatagramSocket socket, InetAddress ip, int porto) {
+    public UDPcliente(DatagramSocket socket, InetAddress ip, int porto) {
         this.socket = socket;
         this.ip = ip;
         this.porto = porto;

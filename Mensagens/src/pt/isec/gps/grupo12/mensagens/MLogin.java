@@ -12,7 +12,7 @@ public class MLogin extends Mensagem {
 	private boolean login;
     private String nome;
     private String pass;
-    public void MLogin(String nome, String pass, boolean login) {
+    public MLogin(String nome, String pass, boolean login) {
         this.nome = nome;
         this.pass = pass;
         this.login = login;

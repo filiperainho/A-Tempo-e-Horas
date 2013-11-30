@@ -15,7 +15,7 @@ public class MRelatorio extends Mensagem {
     private List<String> naoReceberam;
     private List<String> offline;
     private List<String> ignoraram;
-    public void MRelatorio(List<String> receberam, List<String> naoReceberam, List<String> offline, List<String> ignoraram) {
+    public MRelatorio(List<String> receberam, List<String> naoReceberam, List<String> offline, List<String> ignoraram) {
         this.receberam = receberam;
         this.naoReceberam = naoReceberam;
         this.offline = offline;

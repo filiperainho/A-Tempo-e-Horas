@@ -15,7 +15,7 @@ public class MEnviarCor extends Mensagem {
     private String rgb;
     private String remetente;
     private List<String> destinatarios;
-    public void MEnviarCor(String rgb, String remetente, List<String> destinatarios) {
+    public MEnviarCor(String rgb, String remetente, List<String> destinatarios) {
         this.remetente = remetente;
         this.rgb = rgb;
         this.destinatarios = destinatarios;

@@ -13,7 +13,7 @@ import java.util.List;
 
 public class GestorPedidos {
     private ArrayList<Pedido> pedidos;
-    public void GestorPedidos() {
+    public GestorPedidos() {
         pedidos = new ArrayList<>();
     }
 

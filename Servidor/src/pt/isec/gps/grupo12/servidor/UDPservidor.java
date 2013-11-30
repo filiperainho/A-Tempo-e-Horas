@@ -22,7 +22,7 @@ public class UDPservidor {
     public static final int BUFFER_SIZE = 3000;
     private DatagramSocket socket;
     
-    public void UDPservidor(DatagramSocket socket) {
+    public UDPservidor(DatagramSocket socket) {
         this.socket = socket;
     }
 

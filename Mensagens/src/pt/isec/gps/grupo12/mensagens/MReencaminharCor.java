@@ -14,7 +14,7 @@ public class MReencaminharCor extends Mensagem {
     private String remetente;
     private String rgb;
     
-    public void MReencaminharCor(long CodPedido, String remetente, String rgb) {
+    public MReencaminharCor(long CodPedido, String remetente, String rgb) {
         this.codPedido = CodPedido;
         this.remetente = remetente;
         this.rgb = rgb;

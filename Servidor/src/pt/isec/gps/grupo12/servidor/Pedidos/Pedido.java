@@ -18,7 +18,7 @@ public class Pedido {
     private List<String> offline;
     private List<String> ignoraramMensagem;
     private int sinalizacoes;
-    public void Pedido(long IdPedido, String remetente, List<String> naoResponderam) {
+    public Pedido(long IdPedido, String remetente, List<String> naoResponderam) {
 
     }
 
