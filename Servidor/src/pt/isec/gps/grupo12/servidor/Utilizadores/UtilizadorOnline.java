@@ -14,8 +14,8 @@ public class UtilizadorOnline {
     private int porto;
     private InetAddress ip;
     private String username;
-    
-    public void UtilizadorOnline(int porto, InetAddress ip, String username) {
+
+	public UtilizadorOnline(int porto, InetAddress ip, String username) {
         this.porto = porto;
         this.ip = ip;
         this.username = username;

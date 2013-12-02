@@ -7,45 +7,56 @@
 
 package pt.isec.gps.grupo12.servidor.Utilizadores;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.HashMap;
-
-import pt.isec.gps.grupo12.servidor.Pedidos.GestorPedidos;
 
 
 public class MemberShip {
-	private static MemberShip MEMBERSHIP_INSTANCE = null;
     private FonteDados fonteDados;
-    private HashMap<String, UtilizadorOnline> utilizadoresOnlie;
-    public MemberShip() {
-        //this.fonteDados = new FonteDados(); 
-        this.utilizadoresOnlie = new HashMap<>();
+    private HashMap<String, UtilizadorOnline> utilizadoresOnline;
+    public void MemberShip(FonteDados fonteDados) {
+        this.fonteDados = fonteDados; 
+        this.utilizadoresOnline = new HashMap<String, UtilizadorOnline>();
     }
 
-    public boolean login(String user, String pass) {
-        return false;
+    public boolean login(String user, String pass, int porto, String ip) {
+    	if(fonteDados.userExiste(user) == true){
+    		if(fonteDados.getPassword(user).compareTo(pass) == 0){
+    			InetAddress ip_inet;
+				try {
+					ip_inet = InetAddress.getByName("10.0.0.1");
+					UtilizadorOnline novo = new UtilizadorOnline(porto, ip_inet, user);	    			
+	    			utilizadoresOnline.put(user, novo);
+	    			return true;//utilizador logadooo
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}    			
+    		}
+    	}
+        return false;//utilizador não existe ou password errada
     }
 
     public boolean logout(String user) {
+    	if((UtilizadorOnline)utilizadoresOnline.get(user) != null){
+    		utilizadoresOnline.remove(user);
+    		return true;//logout com sucesso
+    	}
         return false;
     }
 
-    public boolean userExiste(String username) {
-        return false;
+    public boolean userExiste(String username) {    	
+        return fonteDados.userExiste(username);
     }
 
     public boolean isUserOnline(String username) {
-        return false;
+    	if((UtilizadorOnline)utilizadoresOnline.get(username) != null){
+    		return true;//utilizador esta online
+    	}
+        return false;//utilizador esta offline
     }
     
     public UtilizadorOnline getUser(String nome){
-        return null;
-    }
-    
-    
-    public static synchronized MemberShip getInstance(){
-    	if(MEMBERSHIP_INSTANCE == null){
-    		MEMBERSHIP_INSTANCE = new MemberShip();
-    	}
-    	return MEMBERSHIP_INSTANCE;
+        return (UtilizadorOnline)utilizadoresOnline.get(nome);
     }
 }
