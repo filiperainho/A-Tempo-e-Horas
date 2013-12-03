@@ -54,7 +54,9 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     }
     
     public void reencaminharMensagem(Mensagem m){
-    	
+    	// Aqui diz o que acontece a mensagem
+    	// se a mensagem for instanceof MEstadoLogin faz 
+    	// recebeMensagem.receberEstadoLogin((MEstadoLogin )m)
     }
     
     void enviaRecepcaoDeCor(MConfirmacaoRecepcao relatorio){

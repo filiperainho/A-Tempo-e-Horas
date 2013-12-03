@@ -8,18 +8,16 @@
 package pt.isec.gps.grupo12.servidor.Utilizadores;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.HashMap;
-
-import pt.isec.gps.grupo12.servidor.Servidor;
 
 
 public class MemberShip {
 	private static MemberShip MEMBERSHIP_INSTANCE = null;
     private FonteDados fonteDados;
     private HashMap<String, UtilizadorOnline> utilizadoresOnline;
-    public void MemberShip(FonteDados fonteDados) {
-        this.fonteDados = fonteDados; 
+    
+    public MemberShip() {
+        //this.fonteDados = new BaseDados(); 
         this.utilizadoresOnline = new HashMap<String, UtilizadorOnline>();
     }
 
