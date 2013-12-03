@@ -21,7 +21,8 @@ public class GestorPedidos extends Thread{
 	private static GestorPedidos GESTOR_PEDIDOS_INSTANCE = null;
 	private static long ID_GENERATOR = 0;
     private ArrayList<Pedido> pedidos;
-    public GestorPedidos() {
+    
+    private GestorPedidos() {
         pedidos = new ArrayList<>();
     }
 
@@ -100,7 +101,7 @@ public class GestorPedidos extends Thread{
     	
     	
     	UtilizadorOnline user = memberShip.getUser(p.getRemetente());
-    	Servidor.getInstance().responder(relatorio, user.getPorto(), user.getIP());
+    	Servidor.getInstance().responder(relatorio, user.getPorto(), user.getIP(), user.getUsername());
     	
     	removerPedido(p);
     }

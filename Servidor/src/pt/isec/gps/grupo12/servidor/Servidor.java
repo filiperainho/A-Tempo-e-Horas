@@ -14,7 +14,7 @@ public class Servidor {
 	private static Servidor SERVIDOR_INSTANCE = null;
 	private UDPservidor socket;
 	
-	public Servidor(){
+	private Servidor(){
 		try {
 			this.socket = new UDPservidor(new DatagramSocket(Constantes.PORTO_SERVIDOR));
 		} catch (SocketException e) {
@@ -66,14 +66,14 @@ public class Servidor {
 		}
 	}
 
-	public void responder(Mensagem escrever, int porto, InetAddress ip){
+	public void responder(Mensagem escrever, int porto, InetAddress ip, String destinatario){
 		try {
 			byte[] obj = UDPservidor.transformObjectToByte(escrever);
 			
 			socket.write(obj, porto, ip);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("O utilizador " + destinatario + " saiu!");
+			MemberShip.getInstance().logout(destinatario);
 		}
 	}
 	

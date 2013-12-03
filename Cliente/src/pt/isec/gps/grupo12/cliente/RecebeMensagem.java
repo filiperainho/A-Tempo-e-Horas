@@ -7,14 +7,13 @@
 
 package pt.isec.gps.grupo12.cliente;
 
-import pt.isec.gps.grupo12.mensagens.MEstadoLogin;
-import pt.isec.gps.grupo12.mensagens.MReencaminharCor;
-import pt.isec.gps.grupo12.mensagens.MRelatorio;
+import java.util.List;
 
 
 
 public interface RecebeMensagem {
-    public abstract void receberRelatorio(MRelatorio relatorio);
-    public abstract void receberEstadoLogin(MEstadoLogin login);
-    public abstract void receberCor(MReencaminharCor cor);
+    public abstract void relatorioRecebido(List<String> receberam, List<String> naoReceberam, List<String> offline, List<String> ignoraram);
+    public abstract void corRecebida(String remetente, String rgb);
+    public abstract void alteracaoDoEstadoDeLogin();
+    public abstract void erroComunicacao();
 }

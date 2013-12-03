@@ -16,6 +16,7 @@ import java.io.Serializable;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 
 import pt.isec.gps.grupo12.mensagens.Constantes;
 
@@ -43,6 +44,9 @@ public class UDPcliente {
         socket.send(packet);
     }
     
+    public void setSoTimeout(int timeout) throws SocketException{
+    	socket.setSoTimeout(timeout);
+    }
     
 
     public static byte[] transformObjectToByte(Serializable obj) throws IOException {
