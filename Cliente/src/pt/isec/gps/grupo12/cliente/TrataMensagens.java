@@ -76,8 +76,16 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     
     // Métodos para a parte gráfica
     @Override
+    public void terminarServico(){
+    	this.sair = true;
+    }
+    @Override
     public boolean isLogged(){
     	return this.isLogged;
+    }
+    @Override
+    public String getUserName(){
+    	return this.userLogged;
     }
     @Override
     public void efectuarLogin(String userName, String password) throws IOException{

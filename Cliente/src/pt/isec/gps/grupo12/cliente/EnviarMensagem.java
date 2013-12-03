@@ -20,4 +20,6 @@ public interface EnviarMensagem {
 	public abstract void efectuarLogout() throws IOException;
     public abstract void enviarCor(String rgb, List<String> destinatarios) throws IOException;
     public abstract boolean isLogged();
+    public abstract String getUserName();
+    public abstract void terminarServico();
 }
