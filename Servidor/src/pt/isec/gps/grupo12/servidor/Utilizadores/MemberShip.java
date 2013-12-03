@@ -11,8 +11,11 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
 
+import pt.isec.gps.grupo12.servidor.Servidor;
+
 
 public class MemberShip {
+	private static MemberShip MEMBERSHIP_INSTANCE = null;
     private FonteDados fonteDados;
     private HashMap<String, UtilizadorOnline> utilizadoresOnline;
     public void MemberShip(FonteDados fonteDados) {
@@ -20,18 +23,12 @@ public class MemberShip {
         this.utilizadoresOnline = new HashMap<String, UtilizadorOnline>();
     }
 
-    public boolean login(String user, String pass, int porto, String ip) {
+    public boolean login(String user, String pass, int porto, InetAddress ip) {
     	if(fonteDados.userExiste(user) == true){
     		if(fonteDados.getPassword(user).compareTo(pass) == 0){
-    			InetAddress ip_inet;
-				try {
-					ip_inet = InetAddress.getByName("10.0.0.1");
-					UtilizadorOnline novo = new UtilizadorOnline(porto, ip_inet, user);	    			
-	    			utilizadoresOnline.put(user, novo);
-	    			return true;//utilizador logadooo
-				} catch (UnknownHostException e) {
-					e.printStackTrace();
-				}    			
+				UtilizadorOnline novo = new UtilizadorOnline(porto, ip, user);	    			
+		    	utilizadoresOnline.put(user, novo);
+		    	return true;//utilizador logadooo
     		}
     	}
         return false;//utilizador não existe ou password errada
@@ -58,5 +55,13 @@ public class MemberShip {
     
     public UtilizadorOnline getUser(String nome){
         return (UtilizadorOnline)utilizadoresOnline.get(nome);
+    }
+    
+    
+    public static synchronized MemberShip getInstance(){
+    	if(MEMBERSHIP_INSTANCE == null){
+    		MEMBERSHIP_INSTANCE = new MemberShip();
+    	}
+    	return MEMBERSHIP_INSTANCE;
     }
 }

@@ -32,7 +32,7 @@ public class Servidor {
 				read = UDPservidor.transformByteToObject(readPacket);
 			
 				if(read instanceof Mensagem){
-					reencaminharMensagem((Mensagem)read);
+					reencaminharMensagem((Mensagem)read, readPacket);
 				}
 				
 			} catch (IOException e) {
@@ -45,7 +45,7 @@ public class Servidor {
 		}
 	}
 	
-	private void reencaminharMensagem(Mensagem read){
+	private void reencaminharMensagem(Mensagem read, DatagramPacket readPacket){
 		GestorPedidos gestorPedidos = GestorPedidos.getInstance();
 		MemberShip memberShip = MemberShip.getInstance();
 		
@@ -58,7 +58,7 @@ public class Servidor {
 		else if(read instanceof MLogin){
 			String userName = ((MLogin) read).getNome();
 			if(((MLogin) read).loginState()){
-				memberShip.login( userName, ((MLogin) read).getPass());
+				memberShip.login( userName, ((MLogin) read).getPass(), readPacket.getPort(), readPacket.getAddress());
 			}
 			else{
 				memberShip.logout(userName);
