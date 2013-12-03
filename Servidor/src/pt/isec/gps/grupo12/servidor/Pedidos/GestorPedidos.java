@@ -10,6 +10,7 @@ package pt.isec.gps.grupo12.servidor.Pedidos;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.isec.gps.grupo12.mensagens.MEnviarCor;
 import pt.isec.gps.grupo12.mensagens.MReencaminharCor;
 import pt.isec.gps.grupo12.mensagens.MRelatorio;
 import pt.isec.gps.grupo12.servidor.Servidor;
@@ -101,7 +102,9 @@ public class GestorPedidos extends Thread{
     	
     	
     	UtilizadorOnline user = memberShip.getUser(p.getRemetente());
-    	Servidor.getInstance().responder(relatorio, user.getPorto(), user.getIP(), user.getUsername());
+    	Servidor.getInstance().
+    	responder(relatorio, user.getPorto(), user.getIP(), user.getUsername());
+    	
     	
     	removerPedido(p);
     }
