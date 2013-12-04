@@ -14,7 +14,8 @@ import java.util.List;
 public interface RecebeMensagem {
     public abstract void relatorioRecebido(List<String> receberam, List<String> naoReceberam, List<String> offline, List<String> ignoraram);
     public abstract void corRecebida(String remetente, String rgb);
-    public abstract void alteracaoDoEstadoDeLogin();
+    public abstract void respostaDeLoginChegou();
+    public abstract void respostaDeLogoutChegou();
     public abstract void servidorEstaADemorarMuitoTempoAResponder();
     public abstract void erroComunicacao();
 }

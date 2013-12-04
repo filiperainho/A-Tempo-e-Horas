@@ -18,7 +18,10 @@ import java.util.List;
 import pt.isec.gps.grupo12.mensagens.Constantes;
 import pt.isec.gps.grupo12.mensagens.MConfirmacaoRecepcao;
 import pt.isec.gps.grupo12.mensagens.MEnviarCor;
+import pt.isec.gps.grupo12.mensagens.MEstadoLogin;
 import pt.isec.gps.grupo12.mensagens.MLogin;
+import pt.isec.gps.grupo12.mensagens.MReencaminharCor;
+import pt.isec.gps.grupo12.mensagens.MRelatorio;
 import pt.isec.gps.grupo12.mensagens.Mensagem;
 
 
@@ -66,10 +69,27 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     }
     
     public void reencaminharMensagem(Mensagem m){
-    	// ver rencaminhar no servidor
-    	// Aqui diz o que acontece a mensagem
-    	// se a mensagem for instanceof MEstadoLogin faz 
-    	// recebeMensagem.receberEstadoLogin((MEstadoLogin )m)
+    	
+    	if(m instanceof MEstadoLogin)
+    	{
+    		if(isLogged)
+    			recebeMensagem.respostaDeLoginChegou();
+    		else
+    			recebeMensagem.respostaDeLogoutChegou();
+    	}
+    	
+    	else if(m instanceof MReencaminharCor)
+    	{
+    		recebeMensagem.corRecebida(((MReencaminharCor) m).getRemetente(), 
+    				((MReencaminharCor) m).getRgb());
+    	}
+    	else if(m instanceof MRelatorio)
+    	{
+    		recebeMensagem.relatorioRecebido(((MRelatorio) m).getReceberam(),
+    				((MRelatorio) m).getNaoReceberam(),
+    				((MRelatorio) m).getOffiline(), 
+    				((MRelatorio) m).getIgnoraram());
+    	}
     }
     
     
