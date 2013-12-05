@@ -58,15 +58,28 @@ public class Pedido {
     }
 
     public void addToResponderam(String username, boolean resposta) {
+    	if(username == null)
+    		return;
+    	
+    	// Falta tirar do nao responderam
+    	responderam.add(username);
     }
 
     public void addToOffline(String username) {
+    	if(username == null)
+    		return;
+    	// falta tirar do nao responderam
+    	offline.add(username);
     }
 
     public void addToIgnoraram(String username) {
+    	if(username == null)
+    		return;
+    	
+    	ignoraramMensagem.add(username);
     }
     public boolean getIsDone(){
-    	return false;
+    	return isDone;
     }
 
     public void incrementeSinalizacoes() {
