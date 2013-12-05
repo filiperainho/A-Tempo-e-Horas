@@ -31,6 +31,7 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     private String userLogged;
     private boolean isLogged;
     private boolean sair;
+    private Temporizador temporizador;
     
     public TrataMensagens(RecebeMensagem recebeMensagem) throws SocketException, UnknownHostException{
         this.recebeMensagem = recebeMensagem;
@@ -57,11 +58,14 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
 				DatagramPacket readPacket = socket.read();
 				Object obj = UDPcliente.transformByteToObject(readPacket);
 				if(obj instanceof Mensagem){
+					temporizador.recebeu();
 					reencaminharMensagem((Mensagem)obj);
 				}
 			} catch (IOException e) {
-				recebeMensagem.erroComunicacao();
-				sair = true;
+				if(!sair){
+					recebeMensagem.erroComunicacao();
+					sair = true;
+				}
 			} catch (ClassNotFoundException e) {
 				continue;
 			}
@@ -72,10 +76,20 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	
     	if(m instanceof MEstadoLogin)
     	{
-    		if(isLogged)
+    		int tipoRespostaLogin = ((MEstadoLogin)m).getTipoResposta();
+    		isLogged = ((MEstadoLogin)m).getEstadoLogin();
+    		if(tipoRespostaLogin == MEstadoLogin.RESPOSTA_LOGIN)
+    		{
     			recebeMensagem.respostaDeLoginChegou();
-    		else
+    		}
+    		else if(tipoRespostaLogin == MEstadoLogin.RESPOSTA_LOGOUT)
+    		{
     			recebeMensagem.respostaDeLogoutChegou();
+    		}
+    		else  if(tipoRespostaLogin == MEstadoLogin.RESPOSTA_SERVIDOR_ENCERRAR)
+    		{
+    			recebeMensagem.servidorNecessitaDeEncerrar();
+    		}
     	}
     	
     	else if(m instanceof MReencaminharCor)
@@ -98,6 +112,7 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     @Override
     public void terminarServico(){
     	this.sair = true;
+    	this.socket.close();
     }
     @Override
     public boolean isLogged(){
@@ -112,6 +127,7 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	MLogin mensagem = new MLogin(userName, password, true);
     	byte[] enviar = UDPcliente.transformObjectToByte(mensagem);
     	socket.write(enviar);
+    	temporizador.enviou();
     }
     
     @Override
@@ -119,6 +135,7 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	MLogin mensagem = new MLogin(userLogged, null, false);
     	byte[] enviar = UDPcliente.transformObjectToByte(mensagem);
     	socket.write(enviar);
+    	temporizador.enviou();
     }
     
     @Override
@@ -126,5 +143,55 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	MEnviarCor mensagem = new MEnviarCor(rgb, userLogged, destinatarios);
     	byte[] enviar = UDPcliente.transformObjectToByte(mensagem);
     	socket.write(enviar);
+    	temporizador.enviou();
     }
+
+
+    
+    class Temporizador extends Thread{
+    	private Integer contaMensagens;
+    	private Integer tempo;
+    	
+    	Temporizador(){
+    		contaMensagens = 0;
+    		tempo = 60;
+    		setDaemon(true);
+    	}
+    	
+    	void recebeu(){
+    		synchronized (contaMensagens) {
+				--contaMensagens;
+				synchronized (tempo) {
+					tempo = 60;
+				}
+			}
+    	}
+    	
+    	void enviou(){
+    		synchronized (contaMensagens) {
+				++contaMensagens;
+				synchronized (tempo) {
+					tempo = 60;
+				}
+			}
+    	}
+    	
+    	@Override
+    	public void run() {
+    		while(true){
+    			try {
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {}
+    			if(tempo > 0){
+    				--tempo;
+    			}
+    			synchronized (contaMensagens) {
+    				if(contaMensagens != 0){
+    					recebeMensagem.servidorEstaADemorarMuitoTempoAResponder();
+    				}
+    			}
+    		}
+    	}
+    }
+
 }

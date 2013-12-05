@@ -48,20 +48,29 @@ public class Servidor {
 	private void reencaminharMensagem(Mensagem read, DatagramPacket readPacket){
 		GestorPedidos gestorPedidos = GestorPedidos.getInstance();
 		MemberShip memberShip = MemberShip.getInstance();
+		InetAddress ip = readPacket.getAddress();
+		int porto = readPacket.getPort();
 		
 		if(read instanceof MEnviarCor){
 			gestorPedidos.addPedido(((MReencaminharCor) read).getRemetente(), ((MEnviarCor) read).getDestinatarios(), ((MEnviarCor) read).getRgb());
 		}
+		
 		if(read instanceof MConfirmacaoRecepcao){
 			gestorPedidos.addRecepcaoDeCor( ((MConfirmacaoRecepcao) read).getCodigoPedido(), ((MConfirmacaoRecepcao) read).getDestinatario(), ((MConfirmacaoRecepcao) read).getRecebida());
 		}
+		
 		else if(read instanceof MLogin){
 			String userName = ((MLogin) read).getNome();
-			if(((MLogin) read).loginState()){
-				memberShip.login( userName, ((MLogin) read).getPass(), readPacket.getPort(), readPacket.getAddress());
+			boolean resposta = false;
+			if(((MLogin) read).isLoginIn()){
+				resposta = memberShip.login( userName, ((MLogin) read).getPass(), porto, ip);
+				MEstadoLogin mEstadoLogin = new MEstadoLogin(resposta, MEstadoLogin.RESPOSTA_LOGIN);
+				responder(mEstadoLogin, porto, ip, userName);
 			}
 			else{
-				memberShip.logout(userName);
+				resposta = memberShip.logout(userName);
+				MEstadoLogin mEstadoLogin = new MEstadoLogin(resposta, MEstadoLogin.RESPOSTA_LOGOUT);
+				responder(mEstadoLogin, porto, ip, userName);
 			}
 		}
 	}

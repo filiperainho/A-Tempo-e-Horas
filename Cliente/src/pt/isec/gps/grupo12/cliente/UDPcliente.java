@@ -44,6 +44,10 @@ public class UDPcliente {
         socket.send(packet);
     }
     
+    public void close(){
+    	socket.close();
+    }
+    
     public void setSoTimeout(int timeout) throws SocketException{
     	socket.setSoTimeout(timeout);
     }

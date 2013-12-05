@@ -16,6 +16,7 @@ public interface RecebeMensagem {
     public abstract void corRecebida(String remetente, String rgb);
     public abstract void respostaDeLoginChegou();
     public abstract void respostaDeLogoutChegou();
+    public abstract void servidorNecessitaDeEncerrar();
     public abstract void servidorEstaADemorarMuitoTempoAResponder();
     public abstract void erroComunicacao();
 }
