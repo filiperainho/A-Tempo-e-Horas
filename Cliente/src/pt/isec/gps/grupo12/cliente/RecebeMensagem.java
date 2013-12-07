@@ -18,5 +18,7 @@ public interface RecebeMensagem {
     public abstract void respostaDeLogoutChegou();
     public abstract void servidorNecessitaDeEncerrar();
     public abstract void servidorEstaADemorarMuitoTempoAResponder();
+    public abstract void adicaoDeContato(boolean sucesso);
+    public abstract void remocaoDeContato(boolean sucesso);
     public abstract void erroComunicacao();
 }

@@ -7,24 +7,69 @@
 
 package pt.isec.gps.grupo12.servidor.Pedidos;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import pt.isec.gps.grupo12.mensagens.Constantes;
 
 
 public class Pedido {
     private long idPedido;
     private String corRGB;
     private String remetente;
-    private List<String> naoResponderam;
-    private List<String> responderam;
-    private List<String> offline;
-    private List<String> ignoraramMensagem;
+    private ArrayList<String> naoResponderam;
+    private ArrayList<String> responderam;
+    private ArrayList<String> offline;
+    private ArrayList<String> ignoraramMensagem;
     private int sinalizacoes;
     private boolean isDone;
     
-    public Pedido(long IdPedido, String remetente, List<String> naoResponderam, String corRGB) {
-
+    public void addToResponderam(String username, boolean resposta) {
+    	if(username == null)
+    		return;
+    	if(resposta){
+	    	if(naoResponderam.remove(username)){
+	    		responderam.add(username);
+	    	}
+    	}
     }
 
+    public void addToOffline(String username) {
+    	if(username == null)
+    		return;
+    	if(naoResponderam.remove(username)){
+    		offline.add(username);
+    	}
+    }
+
+    public void addToIgnoraram(String username) {
+    	if(username == null)
+    		return;
+    	
+    	ignoraramMensagem.add(username);
+    }
+    
+    public void incrementeSinalizacoes() {
+        ++sinalizacoes;
+        if(sinalizacoes == Constantes.MAXIMO_SINALIZACOES_SERVIDOR){
+        	this.isDone = true;
+        }
+    }
+    
+    public Pedido(long IdPedido, String remetente, List<String> naoResponderam, String corRGB) {
+    	this.idPedido = IdPedido;
+    	this.remetente = remetente;
+    	this.naoResponderam = new ArrayList<>(naoResponderam);
+    	this.corRGB = corRGB;
+    	this.naoResponderam = new ArrayList<>();
+    	this.offline = new ArrayList<>();
+    	this.ignoraramMensagem = new ArrayList<>();
+    }
+    
+    public boolean getIsDone(){
+    	return isDone;
+    }
+    
     public long getIdPedido() {
         return idPedido;
     }
@@ -55,47 +100,5 @@ public class Pedido {
     
     public String getCorRGB(){
     	return corRGB;
-    }
-
-    public void addToResponderam(String username, boolean resposta) {
-    	if(username == null)
-    		return;
-    	int aux = getPosicaoDoNomeNoNaoResponderam(username);
-    	if(aux == -1)
-    		return;
-    	naoResponderam.remove(aux);
-    	responderam.add(username);
-    }
-
-    public void addToOffline(String username) {
-    	if(username == null)
-    		return;
-    	int aux = getPosicaoDoNomeNoNaoResponderam(username);
-    	if(aux == -1)
-    		return;
-    	naoResponderam.remove(aux);
-    	offline.add(username);
-    }
-
-    public void addToIgnoraram(String username) {
-    	if(username == null)
-    		return;
-    	
-    	ignoraramMensagem.add(username);
-    }
-    public boolean getIsDone(){
-    	return isDone;
-    }
-
-    public void incrementeSinalizacoes() {
-        ++sinalizacoes;
-    }
-    
-    public int getPosicaoDoNomeNoNaoResponderam(String username){
-    	for(int i = 0; i < naoResponderam.size(); i++){
-    		if(naoResponderam.get(i).equals(username))
-    			return i;
-    	}
-    	return -1;
     }
 }

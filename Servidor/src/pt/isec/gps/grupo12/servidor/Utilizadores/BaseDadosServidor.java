@@ -2,7 +2,7 @@ package pt.isec.gps.grupo12.servidor.Utilizadores;
 
 import java.util.ArrayList;
 
-public class BaseDados implements FonteDados {
+public class BaseDadosServidor implements FonteDadosServidor {
 	
 	class User{
 		String nome;
@@ -15,7 +15,7 @@ public class BaseDados implements FonteDados {
 	
 	ArrayList<User> lista;
 
-	public BaseDados(){
+	public BaseDadosServidor(){
 		lista = new ArrayList<>();
 		lista.add(new User("assuncao", "p"));
 		lista.add(new User("rainho", "p"));

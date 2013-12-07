@@ -13,11 +13,11 @@ import java.util.HashMap;
 
 public class MemberShip {
 	private static MemberShip MEMBERSHIP_INSTANCE = null;
-    private FonteDados fonteDados;
+    private FonteDadosServidor fonteDados;
     private HashMap<String, UtilizadorOnline> utilizadoresOnline;
     
     public MemberShip() {
-        this.fonteDados = new BaseDados(); 
+        this.fonteDados = new BaseDadosServidor(); 
         this.utilizadoresOnline = new HashMap<String, UtilizadorOnline>();
         System.out.println("MemberShip criada!");
     }

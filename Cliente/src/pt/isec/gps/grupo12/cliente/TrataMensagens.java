@@ -22,6 +22,7 @@ import pt.isec.gps.grupo12.mensagens.MEstadoLogin;
 import pt.isec.gps.grupo12.mensagens.MLogin;
 import pt.isec.gps.grupo12.mensagens.MReencaminharCor;
 import pt.isec.gps.grupo12.mensagens.MRelatorio;
+import pt.isec.gps.grupo12.mensagens.MRespostaAdicaoContato;
 import pt.isec.gps.grupo12.mensagens.Mensagem;
 
 
@@ -32,12 +33,14 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     private boolean isLogged;
     private boolean sair;
     private Temporizador temporizador;
+    private FonteDadosCliente fonteDadosCliente;
     
     public TrataMensagens(RecebeMensagem recebeMensagem) throws SocketException, UnknownHostException{
         this.recebeMensagem = recebeMensagem;
         this.userLogged = null;
         this.isLogged = false;
         this.socket = new UDPcliente(new DatagramSocket(), InetAddress.getByName(Constantes.IP_SERVIDOR), Constantes.PORTO_SERVIDOR);
+        this.fonteDadosCliente = new BaseDadosCliente();
         this.temporizador = new Temporizador();
         System.out.println("TrataMensagens criado com sucesso!");
         start();
@@ -106,6 +109,16 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     				((MRelatorio) m).getOffiline(), 
     				((MRelatorio) m).getIgnoraram());
     	}
+    	
+    	else if(m instanceof MRespostaAdicaoContato){
+    		if(((MRespostaAdicaoContato)m).getResposta()){
+    			fonteDadosCliente.adicionarContato(userLogged, ((MRespostaAdicaoContato)m).getUserName(), ((MRespostaAdicaoContato)m).getNome());
+    			recebeMensagem.adicaoDeContato(true);
+    		}
+    		else{
+    			recebeMensagem.adicaoDeContato(false);
+    		}
+    	}
     }
     
     
@@ -115,6 +128,17 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     public void terminarServico(){
     	this.sair = true;
     	this.socket.close();
+    }
+    @Override
+    public void adicionarContato(String userName){
+    }
+    @Override
+    public void removeContato(String userName){
+    	fonteDadosCliente.removeContato(userLogged, userName);
+    }
+    @Override
+    public List<Contato> getContatos(){
+    	return fonteDadosCliente.getContatos(userLogged);
     }
     @Override
     public boolean isLogged(){

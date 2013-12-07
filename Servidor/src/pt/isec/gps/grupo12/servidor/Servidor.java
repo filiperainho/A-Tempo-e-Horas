@@ -55,15 +55,18 @@ public class Servidor {
 		int porto = readPacket.getPort();
 		
 		if(read instanceof MEnviarCor){
-			gestorPedidos.addPedido(((MReencaminharCor) read).getRemetente(), ((MEnviarCor) read).getDestinatarios(), ((MEnviarCor) read).getRgb());
+			gestorPedidos.addPedido(((MEnviarCor) read).getRemetente(), ((MEnviarCor) read).getDestinatarios(), ((MEnviarCor) read).getRgb());
+			System.out.println("Recebido MEnviarCor " + ((MEnviarCor) read).getRemetente() + " " + ((MEnviarCor) read).getRgb() + ((MEnviarCor) read).getDestinatarios());
 		}
 		
 		if(read instanceof MConfirmacaoRecepcao){
 			gestorPedidos.addRecepcaoDeCor( ((MConfirmacaoRecepcao) read).getCodigoPedido(), ((MConfirmacaoRecepcao) read).getDestinatario(), ((MConfirmacaoRecepcao) read).getRecebida());
+			System.out.println("Recebido MConfirmacaoRecepcao " + ((MConfirmacaoRecepcao) read).getCodigoPedido() + " " + ((MConfirmacaoRecepcao) read).getDestinatario() + " " + ((MConfirmacaoRecepcao) read).getRecebida());
 		}
 		
 		else if(read instanceof MLogin){
 			String userName = ((MLogin) read).getNome();
+			System.out.println("Recebido MLogin " + userName);
 			boolean resposta = false;
 			if(((MLogin) read).isLoginIn()){
 				resposta = memberShip.login( userName, ((MLogin) read).getPass(), porto, ip);
@@ -76,6 +79,20 @@ public class Servidor {
 				responder(mEstadoLogin, porto, ip, userName);
 			}
 			System.out.println("Enviado login=" + resposta + " para o utilizador " + userName);
+		}
+		
+		else if(read instanceof MAdicionarContato){
+			System.out.println("Recebido MAdicionarContato " + ((MAdicionarContato) read).getQueAdiciona() + " " + ((MAdicionarContato) read).getUserNameAdicionar());
+			boolean resposta = memberShip.userExiste(((MAdicionarContato) read).getUserNameAdicionar());
+			if(resposta){
+				//String nome = memberShip.
+				MRespostaAdicaoContato mRespostaAdicaoContato = new MRespostaAdicaoContato(resposta, ((MAdicionarContato) read).getUserNameAdicionar(), null);
+				responder(mRespostaAdicaoContato, porto, ip, ((MAdicionarContato) read).getQueAdiciona());
+			}
+			else{
+				MRespostaAdicaoContato mRespostaAdicaoContato = new MRespostaAdicaoContato(resposta, ((MAdicionarContato) read).getUserNameAdicionar(), null);
+				responder(mRespostaAdicaoContato, porto, ip, ((MAdicionarContato) read).getQueAdiciona());
+			}
 		}
 	}
 

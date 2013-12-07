@@ -133,4 +133,16 @@ public class ActividadeLogin extends Activity implements RecebeMensagem{
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public void adicaoDeContato(boolean sucesso) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void remocaoDeContato(boolean sucesso) {
+		// TODO Auto-generated method stub
+		
+	}
 }
