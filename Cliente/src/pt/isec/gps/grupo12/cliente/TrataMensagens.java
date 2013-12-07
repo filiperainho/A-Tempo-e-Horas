@@ -17,6 +17,7 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 import pt.isec.gps.grupo12.mensagens.Constantes;
+import pt.isec.gps.grupo12.mensagens.MAdicionarContato;
 import pt.isec.gps.grupo12.mensagens.MEnviarCor;
 import pt.isec.gps.grupo12.mensagens.MEstadoLogin;
 import pt.isec.gps.grupo12.mensagens.MLogin;
@@ -130,7 +131,11 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	this.socket.close();
     }
     @Override
-    public void adicionarContato(String userName){
+    public void adicionarContato(String userName) throws IOException{
+    	MAdicionarContato adicionarContato = new MAdicionarContato(userLogged, userName);
+    	byte[] enviar = UDPcliente.transformObjectToByte(adicionarContato);
+    	socket.write(enviar);
+    	temporizador.enviou();
     }
     @Override
     public void removeContato(String userName){

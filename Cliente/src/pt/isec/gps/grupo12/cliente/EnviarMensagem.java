@@ -20,6 +20,6 @@ public interface EnviarMensagem {
     public abstract String getUserName();
     public abstract void terminarServico();
     public abstract List<Contato> getContatos();
-    public abstract void adicionarContato(String userName);
+    public abstract void adicionarContato(String userName) throws IOException;
     public abstract void removeContato(String userName);
 }
