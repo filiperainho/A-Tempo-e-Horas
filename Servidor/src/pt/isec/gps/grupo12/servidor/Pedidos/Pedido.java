@@ -60,15 +60,20 @@ public class Pedido {
     public void addToResponderam(String username, boolean resposta) {
     	if(username == null)
     		return;
-    	
-    	// Falta tirar do nao responderam
+    	int aux = getPosicaoDoNomeNoNaoResponderam(username);
+    	if(aux == -1)
+    		return;
+    	naoResponderam.remove(aux);
     	responderam.add(username);
     }
 
     public void addToOffline(String username) {
     	if(username == null)
     		return;
-    	// falta tirar do nao responderam
+    	int aux = getPosicaoDoNomeNoNaoResponderam(username);
+    	if(aux == -1)
+    		return;
+    	naoResponderam.remove(aux);
     	offline.add(username);
     }
 
@@ -84,5 +89,13 @@ public class Pedido {
 
     public void incrementeSinalizacoes() {
         ++sinalizacoes;
+    }
+    
+    public int getPosicaoDoNomeNoNaoResponderam(String username){
+    	for(int i = 0; i < naoResponderam.size(); i++){
+    		if(naoResponderam.get(i).equals(username))
+    			return i;
+    	}
+    	return -1;
     }
 }
