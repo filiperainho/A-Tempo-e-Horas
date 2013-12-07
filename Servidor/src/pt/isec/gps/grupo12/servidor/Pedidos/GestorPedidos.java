@@ -23,6 +23,7 @@ public class GestorPedidos extends Thread{
     
     private GestorPedidos() {
         pedidos = new ArrayList<>();
+        System.out.println("GestorPedidos criado!");
     }
 
     public void addPedido(String remetente, List<String> destinatarios, String corRGB) {

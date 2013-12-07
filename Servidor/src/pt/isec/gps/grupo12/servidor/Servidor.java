@@ -17,30 +17,33 @@ public class Servidor {
 	private Servidor(){
 		try {
 			this.socket = new UDPservidor(new DatagramSocket(Constantes.PORTO_SERVIDOR));
+			System.out.println("Socket UDP criado com sucesso!");
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Socket UDP não foi criado com sucesso!");
+			System.exit(-5);
 		}
+		System.out.println("Servidor criado!");
 	}
 	
 	public void startLoop(){
+		System.out.println("Iniciado ciclo de leitura de mensagens!");
 		while(true){
 			try {
 				DatagramPacket readPacket = socket.read();
 				Object read;
-			
+				
+				System.out.println("A ler mensagem!");
 				read = UDPservidor.transformByteToObject(readPacket);
 			
 				if(read instanceof Mensagem){
+					System.out.println("Recebida Mensagem!");
 					reencaminharMensagem((Mensagem)read, readPacket);
 				}
 				
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("IOException while(true) startLoop()");
 			} catch (ClassNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				System.err.println("ClassNotFoundException while(true) startLoop()");
 			}
 		}
 	}
@@ -72,6 +75,7 @@ public class Servidor {
 				MEstadoLogin mEstadoLogin = new MEstadoLogin(resposta, MEstadoLogin.RESPOSTA_LOGOUT);
 				responder(mEstadoLogin, porto, ip, userName);
 			}
+			System.out.println("Enviado login=" + resposta + " para o utilizador " + userName);
 		}
 	}
 
@@ -92,4 +96,10 @@ public class Servidor {
     	}
     	return SERVIDOR_INSTANCE;
     }
+	
+	public static void main(String args[]){
+		MemberShip.getInstance();
+		GestorPedidos.getInstance();
+		Servidor.getInstance().startLoop();
+	}
 }

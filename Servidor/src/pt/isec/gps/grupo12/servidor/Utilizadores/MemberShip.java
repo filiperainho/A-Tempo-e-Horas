@@ -19,6 +19,7 @@ public class MemberShip {
     public MemberShip() {
         this.fonteDados = new BaseDados(); 
         this.utilizadoresOnline = new HashMap<String, UtilizadorOnline>();
+        System.out.println("MemberShip criada!");
     }
 
     public boolean login(String user, String pass, int porto, InetAddress ip) {

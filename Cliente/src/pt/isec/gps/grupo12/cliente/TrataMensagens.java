@@ -12,11 +12,11 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.List;
 
 import pt.isec.gps.grupo12.mensagens.Constantes;
-import pt.isec.gps.grupo12.mensagens.MConfirmacaoRecepcao;
 import pt.isec.gps.grupo12.mensagens.MEnviarCor;
 import pt.isec.gps.grupo12.mensagens.MEstadoLogin;
 import pt.isec.gps.grupo12.mensagens.MLogin;
@@ -38,9 +38,8 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
         this.userLogged = null;
         this.isLogged = false;
         this.socket = new UDPcliente(new DatagramSocket(), InetAddress.getByName(Constantes.IP_SERVIDOR), Constantes.PORTO_SERVIDOR);
-    }
-    
-    public void startLoop(){
+        this.temporizador = new Temporizador();
+        System.out.println("TrataMensagens criado com sucesso!");
         start();
     }
     
@@ -53,6 +52,7 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
 			recebeMensagem.erroComunicacao();
 			sair = true;
 		}
+    	System.out.println("Tratamento de mensagens iniciado!");
     	while(!sair){
     		try {
 				DatagramPacket readPacket = socket.read();
@@ -61,6 +61,8 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
 					temporizador.recebeu();
 					reencaminharMensagem((Mensagem)obj);
 				}
+    		} catch (SocketTimeoutException ex){
+    			continue;
 			} catch (IOException e) {
 				if(!sair){
 					recebeMensagem.erroComunicacao();
@@ -124,6 +126,7 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     }
     @Override
     public void efectuarLogin(String userName, String password) throws IOException{
+    	this.userLogged = userName;
     	MLogin mensagem = new MLogin(userName, password, true);
     	byte[] enviar = UDPcliente.transformObjectToByte(mensagem);
     	socket.write(enviar);

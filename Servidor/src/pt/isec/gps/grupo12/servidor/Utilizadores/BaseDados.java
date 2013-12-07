@@ -22,6 +22,7 @@ public class BaseDados implements FonteDados {
 		lista.add(new User("david", "p"));
 		lista.add(new User("erbi", "p"));
 		lista.add(new User("cadima", "p"));
+		System.out.println("BaseDados criada!");
 	}
 	
 	@Override
