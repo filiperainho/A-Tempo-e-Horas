@@ -21,5 +21,5 @@ public interface EnviarMensagem {
     public abstract void terminarServico();
     public abstract List<Contato> getContatos();
     public abstract void adicionarContato(String userName) throws IOException;
-    public abstract void removeContato(String userName);
+    public abstract boolean removeContato(String userName);
 }

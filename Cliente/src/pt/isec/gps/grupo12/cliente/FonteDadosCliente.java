@@ -6,4 +6,5 @@ public interface FonteDadosCliente {
 	public abstract List<Contato> getContatos(String userOnline);
     public abstract void adicionarContato(String userOnline, String userName, String nome);
     public abstract boolean removeContato(String userOnline, String userName);
+    public abstract boolean contatoExiste(String userOnline, String userName);
 }

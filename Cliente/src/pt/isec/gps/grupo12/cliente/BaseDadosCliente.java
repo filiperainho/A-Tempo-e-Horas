@@ -28,6 +28,11 @@ public class BaseDadosCliente implements FonteDadosCliente{
     			contatos.get(userOnline).add(novo);
     		}
     	}
+    	else{
+    		ArrayList<Contato> novos = new ArrayList<Contato>();
+    		novos.add(new Contato(userName, nome));
+    		contatos.put(userOnline, novos);
+    	}
     }
 	
 	@Override
@@ -43,4 +48,17 @@ public class BaseDadosCliente implements FonteDadosCliente{
 		}
 		return false;
     }
+	
+	@Override
+	public boolean contatoExiste(String userOnline, String userName){
+		if(contatos.containsKey(userOnline)){
+			ArrayList<Contato> aux = contatos.get(userOnline);
+			for(Contato contato : aux){
+				if(contato.getUserName().equals(userName)){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

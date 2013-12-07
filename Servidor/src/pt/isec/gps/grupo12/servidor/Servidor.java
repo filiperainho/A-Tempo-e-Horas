@@ -93,6 +93,7 @@ public class Servidor {
 				MRespostaAdicaoContato mRespostaAdicaoContato = new MRespostaAdicaoContato(resposta, userName, null);
 				responder(mRespostaAdicaoContato, porto, ip, ((MAdicionarContato) read).getQueAdiciona());
 			}
+			System.out.println("Enviado adicionarContato=" + resposta + " para o utilizador " + userName);
 		}
 	}
 

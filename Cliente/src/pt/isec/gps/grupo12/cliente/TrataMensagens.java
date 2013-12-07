@@ -45,6 +45,7 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
         this.temporizador = new Temporizador();
         System.out.println("TrataMensagens criado com sucesso!");
         start();
+        temporizador.start();
     }
     
     @Override
@@ -90,6 +91,7 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     		}
     		else if(tipoRespostaLogin == MEstadoLogin.RESPOSTA_LOGOUT)
     		{
+    			userLogged = null;
     			recebeMensagem.respostaDeLogoutChegou();
     		}
     		else  if(tipoRespostaLogin == MEstadoLogin.RESPOSTA_SERVIDOR_ENCERRAR)
@@ -100,8 +102,10 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	
     	else if(m instanceof MReencaminharCor)
     	{
-    		recebeMensagem.corRecebida(((MReencaminharCor) m).getRemetente(), 
-    				((MReencaminharCor) m).getRgb());
+    		String remetente = ((MReencaminharCor) m).getRemetente();
+    		if(fonteDadosCliente.contatoExiste(userLogged, remetente)){
+    			recebeMensagem.corRecebida(remetente, ((MReencaminharCor) m).getRgb());
+    		}
     	}
     	else if(m instanceof MRelatorio)
     	{
@@ -138,8 +142,8 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	temporizador.enviou();
     }
     @Override
-    public void removeContato(String userName){
-    	fonteDadosCliente.removeContato(userLogged, userName);
+    public boolean removeContato(String userName){
+    	return fonteDadosCliente.removeContato(userLogged, userName);
     }
     @Override
     public List<Contato> getContatos(){
@@ -193,6 +197,7 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	void recebeu(){
     		synchronized (contaMensagens) {
 				--contaMensagens;
+				System.out.println( " >>>>" + contaMensagens);
 				synchronized (tempo) {
 					tempo = 60;
 				}
@@ -202,6 +207,7 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	void enviou(){
     		synchronized (contaMensagens) {
 				++contaMensagens;
+				System.out.println( " >>>>" + contaMensagens);
 				synchronized (tempo) {
 					tempo = 60;
 				}
@@ -219,7 +225,9 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     			}
     			synchronized (contaMensagens) {
     				if(contaMensagens != 0){
+    					terminarServico();
     					recebeMensagem.servidorEstaADemorarMuitoTempoAResponder();
+    					break;
     				}
     			}
     		}

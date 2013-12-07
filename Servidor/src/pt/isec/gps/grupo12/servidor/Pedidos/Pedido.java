@@ -32,6 +32,9 @@ public class Pedido {
 	    		responderam.add(username);
 	    	}
     	}
+    	else{
+    		addToIgnoraram(username);
+    	}
     }
 
     public void addToOffline(String username) {

@@ -37,7 +37,15 @@ public class GestorPedidos extends Thread{
     	}
     	
     	synchronized (pedidos) {
-    		pedidos.add(new Pedido(++ID_GENERATOR, remetente, destinatarios, corRGB));
+    		Pedido p = new Pedido(++ID_GENERATOR, remetente, destinatarios, corRGB);
+    		for(String user : destinatarios){
+    			boolean online = MemberShip.getInstance().isUserOnline(user);
+    			if(!online){
+    				p.addToOffline(user);
+    			}
+    		}
+    		pedidos.add(p);
+    		System.out.println("Removido pedido " + p.getIdPedido());
 		}
     }
     
@@ -50,14 +58,11 @@ public class GestorPedidos extends Thread{
     		for(Pedido p : pedidos){
     			if(p.getIdPedido() == idPedido){
     				p.addToResponderam(destinatario, recebida);
+    				System.out.println("Recebida confirmacao de "+ destinatario + " do pedido " + idPedido + " com valor " + recebida);
     				return;
     			}
     		}
     	}
-    }
-
-    public void startLoop() {
-    	start();
     }
     
     @Override
@@ -67,8 +72,6 @@ public class GestorPedidos extends Thread{
     		try {
 				Thread.sleep(5000);
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
     	}
     }
@@ -76,14 +79,17 @@ public class GestorPedidos extends Thread{
     
     
     private void sinalizar(){
+    	ArrayList<Pedido> ped = new ArrayList<>();
     	synchronized (pedidos) {
     		for(Pedido p : pedidos){
     			p.incrementeSinalizacoes();
     			if(p.getIsDone()){
     				responderAoPedido(p);
+    				ped.add(p);
     			}
     		}
     	}
+    	removerPedidos(ped);
     }
     
     private void responderAoPedido(Pedido p){
@@ -95,22 +101,20 @@ public class GestorPedidos extends Thread{
     	
     	MemberShip memberShip = MemberShip.getInstance();
     	if(!memberShip.isUserOnline(p.getRemetente())){
-    		removerPedido(p);
     		return;
     	}
-    	
     	
     	UtilizadorOnline user = memberShip.getUser(p.getRemetente());
     	Servidor.getInstance().
     	responder(relatorio, user.getPorto(), user.getIP(), user.getUsername());
-    	
-    	
-    	removerPedido(p);
     }
     
-    private void removerPedido(Pedido p){
+    private void removerPedidos(ArrayList<Pedido> ped){
     	synchronized (pedidos) {
-    		pedidos.remove(p);
+    		for(Pedido p : ped){
+    			pedidos.remove(p);
+    			System.out.println("Removido pedido " + p.getIdPedido());
+    		}
     	}
     }
     
@@ -118,6 +122,7 @@ public class GestorPedidos extends Thread{
     public static synchronized GestorPedidos getInstance(){
     	if(GESTOR_PEDIDOS_INSTANCE == null){
     		GESTOR_PEDIDOS_INSTANCE = new GestorPedidos();
+    		GESTOR_PEDIDOS_INSTANCE.start();
     	}
     	return GESTOR_PEDIDOS_INSTANCE;
     }
