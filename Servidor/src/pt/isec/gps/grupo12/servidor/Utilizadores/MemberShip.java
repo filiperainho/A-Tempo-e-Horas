@@ -17,7 +17,7 @@ public class MemberShip {
     private HashMap<String, UtilizadorOnline> utilizadoresOnline;
     
     public MemberShip() {
-        //this.fonteDados = new BaseDados(); 
+        this.fonteDados = new BaseDados(); 
         this.utilizadoresOnline = new HashMap<String, UtilizadorOnline>();
     }
 

@@ -10,8 +10,6 @@ package pt.isec.gps.grupo12.servidor.Pedidos;
 import java.util.ArrayList;
 import java.util.List;
 
-import pt.isec.gps.grupo12.mensagens.MEnviarCor;
-import pt.isec.gps.grupo12.mensagens.MReencaminharCor;
 import pt.isec.gps.grupo12.mensagens.MRelatorio;
 import pt.isec.gps.grupo12.servidor.Servidor;
 import pt.isec.gps.grupo12.servidor.Utilizadores.MemberShip;
