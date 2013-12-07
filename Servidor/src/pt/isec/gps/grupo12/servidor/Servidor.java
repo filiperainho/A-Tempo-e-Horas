@@ -5,7 +5,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-
 import pt.isec.gps.grupo12.mensagens.*;
 import pt.isec.gps.grupo12.servidor.Pedidos.GestorPedidos;
 import pt.isec.gps.grupo12.servidor.Utilizadores.MemberShip;
@@ -19,7 +18,7 @@ public class Servidor {
 			this.socket = new UDPservidor(new DatagramSocket(Constantes.PORTO_SERVIDOR));
 			System.out.println("Socket UDP criado com sucesso!");
 		} catch (SocketException e) {
-			System.err.println("Socket UDP não foi criado com sucesso!");
+			System.err.println("Socket UDP nï¿½o foi criado com sucesso!");
 			System.exit(-5);
 		}
 		System.out.println("Servidor criado!");
@@ -84,13 +83,14 @@ public class Servidor {
 		else if(read instanceof MAdicionarContato){
 			System.out.println("Recebido MAdicionarContato " + ((MAdicionarContato) read).getQueAdiciona() + " " + ((MAdicionarContato) read).getUserNameAdicionar());
 			boolean resposta = memberShip.userExiste(((MAdicionarContato) read).getUserNameAdicionar());
+			String userName = ((MAdicionarContato) read).getUserNameAdicionar();
 			if(resposta){
-				//String nome = memberShip.
-				MRespostaAdicaoContato mRespostaAdicaoContato = new MRespostaAdicaoContato(resposta, ((MAdicionarContato) read).getUserNameAdicionar(), null);
+				String nome = memberShip.getNomeComUserName(userName);
+				MRespostaAdicaoContato mRespostaAdicaoContato = new MRespostaAdicaoContato(resposta, userName, nome);
 				responder(mRespostaAdicaoContato, porto, ip, ((MAdicionarContato) read).getQueAdiciona());
 			}
 			else{
-				MRespostaAdicaoContato mRespostaAdicaoContato = new MRespostaAdicaoContato(resposta, ((MAdicionarContato) read).getUserNameAdicionar(), null);
+				MRespostaAdicaoContato mRespostaAdicaoContato = new MRespostaAdicaoContato(resposta, userName, null);
 				responder(mRespostaAdicaoContato, porto, ip, ((MAdicionarContato) read).getQueAdiciona());
 			}
 		}

@@ -56,6 +56,10 @@ public class MemberShip {
         return (UtilizadorOnline)utilizadoresOnline.get(nome);
     }
     
+    public String getNomeComUserName(String username){
+    	return fonteDados.getNome(username);
+    }
+    
     
     public static synchronized MemberShip getInstance(){
     	if(MEMBERSHIP_INSTANCE == null){
