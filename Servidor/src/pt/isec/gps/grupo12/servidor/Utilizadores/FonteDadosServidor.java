@@ -11,4 +11,5 @@ package pt.isec.gps.grupo12.servidor.Utilizadores;
 public interface FonteDadosServidor {
     public abstract String getPassword(String username);
     public abstract boolean userExiste(String username);
+    public abstract String getNome(String username);
 }
