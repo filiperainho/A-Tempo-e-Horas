@@ -57,6 +57,7 @@ public class Pedido {
         if(sinalizacoes == Constantes.MAXIMO_SINALIZACOES_SERVIDOR){
         	this.isDone = true;
         }
+        System.out.println(" ::" + sinalizacoes + " " + isDone);
     }
     
     public Pedido(long IdPedido, String remetente, List<String> naoResponderam, String corRGB) {
@@ -67,6 +68,7 @@ public class Pedido {
     	this.naoResponderam = new ArrayList<>();
     	this.offline = new ArrayList<>();
     	this.ignoraramMensagem = new ArrayList<>();
+    	this.isDone = false;
     }
     
     public boolean getIsDone(){

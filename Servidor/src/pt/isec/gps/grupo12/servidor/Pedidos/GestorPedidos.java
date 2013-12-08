@@ -10,6 +10,7 @@ package pt.isec.gps.grupo12.servidor.Pedidos;
 import java.util.ArrayList;
 import java.util.List;
 
+import pt.isec.gps.grupo12.mensagens.Constantes;
 import pt.isec.gps.grupo12.mensagens.MRelatorio;
 import pt.isec.gps.grupo12.servidor.Servidor;
 import pt.isec.gps.grupo12.servidor.Utilizadores.MemberShip;
@@ -45,7 +46,7 @@ public class GestorPedidos extends Thread{
     			}
     		}
     		pedidos.add(p);
-    		System.out.println("Removido pedido " + p.getIdPedido());
+    		System.out.println("Adicionado pedido " + p.getIdPedido());
 		}
     }
     
@@ -70,7 +71,7 @@ public class GestorPedidos extends Thread{
     	while(true){
     		sinalizar();
     		try {
-				Thread.sleep(5000);
+				Thread.sleep(Constantes.THREAD_SLEEP);
 			} catch (InterruptedException e) {
 			}
     	}
@@ -101,12 +102,13 @@ public class GestorPedidos extends Thread{
     	
     	MemberShip memberShip = MemberShip.getInstance();
     	if(!memberShip.isUserOnline(p.getRemetente())){
+    		System.out.println("User offline");
     		return;
     	}
-    	
+    	System.out.println("entrei");
     	UtilizadorOnline user = memberShip.getUser(p.getRemetente());
-    	Servidor.getInstance().
-    	responder(relatorio, user.getPorto(), user.getIP(), user.getUsername());
+    	Servidor.getInstance().responder(relatorio, user.getPorto(), user.getIP(), user.getUsername());
+    	System.out.println("Resposta para o pedido " + p.getIdPedido() + " enviada!");
     }
     
     private void removerPedidos(ArrayList<Pedido> ped){

@@ -190,16 +190,15 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	
     	Temporizador(){
     		contaMensagens = 0;
-    		tempo = 60;
+    		tempo = Constantes.MAXIMO_SINALIZACOES_ESPERA_CLIENTE;
     		setDaemon(true);
     	}
     	
     	void recebeu(){
     		synchronized (contaMensagens) {
 				--contaMensagens;
-				System.out.println( " >>>>" + contaMensagens);
 				synchronized (tempo) {
-					tempo = 60;
+					tempo = Constantes.MAXIMO_SINALIZACOES_ESPERA_CLIENTE;
 				}
 			}
     	}
@@ -207,9 +206,8 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	void enviou(){
     		synchronized (contaMensagens) {
 				++contaMensagens;
-				System.out.println( " >>>>" + contaMensagens);
 				synchronized (tempo) {
-					tempo = 60;
+					tempo = Constantes.MAXIMO_SINALIZACOES_ESPERA_CLIENTE;
 				}
 			}
     	}
@@ -218,10 +216,12 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	public void run() {
     		while(true){
     			try {
-					Thread.sleep(1000);
+					Thread.sleep(Constantes.THREAD_SLEEP);
 				} catch (InterruptedException e) {}
     			if(tempo > 0){
     				--tempo;
+    				System.out.println(" ::" + tempo);
+    				continue;
     			}
     			synchronized (contaMensagens) {
     				if(contaMensagens != 0){
@@ -229,6 +229,7 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     					recebeMensagem.servidorEstaADemorarMuitoTempoAResponder();
     					break;
     				}
+    				tempo = Constantes.MAXIMO_SINALIZACOES_ESPERA_CLIENTE;
     			}
     		}
     	}

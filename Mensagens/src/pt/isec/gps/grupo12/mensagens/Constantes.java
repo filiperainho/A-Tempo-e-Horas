@@ -5,7 +5,9 @@ public class Constantes {
 	public static final String IP_SERVIDOR = "localhost";
 	public static final int PORTO_SERVIDOR = 1111;
 	public static final int MAXIMO_SINALIZACOES_SERVIDOR = 15;
+	public static final int MAXIMO_SINALIZACOES_ESPERA_CLIENTE = 60;
 	public static final int CLIENTE_SOCKET_TIMEOUT = 1024;
 	public static final int BUFFER_SIZE = 1024;
+	public static final int THREAD_SLEEP = 2000;
 
 }
