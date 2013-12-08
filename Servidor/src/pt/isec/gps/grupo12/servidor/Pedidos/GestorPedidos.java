@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pt.isec.gps.grupo12.mensagens.Constantes;
+import pt.isec.gps.grupo12.mensagens.MReencaminharCor;
 import pt.isec.gps.grupo12.mensagens.MRelatorio;
 import pt.isec.gps.grupo12.servidor.Servidor;
 import pt.isec.gps.grupo12.servidor.Utilizadores.MemberShip;
@@ -46,6 +47,11 @@ public class GestorPedidos extends Thread{
     			}
     		}
     		pedidos.add(p);
+    		for(String s : p.getNaoResponderam()){
+    			MReencaminharCor mens = new MReencaminharCor(p.getIdPedido(), remetente, corRGB);
+    			UtilizadorOnline user = MemberShip.getInstance().getUser(s);
+    			Servidor.getInstance().responder(mens, user.getPorto(), user.getIP(), user.getUsername());
+    		}
     		System.out.println("Adicionado pedido " + p.getIdPedido());
 		}
     }
@@ -102,10 +108,8 @@ public class GestorPedidos extends Thread{
     	
     	MemberShip memberShip = MemberShip.getInstance();
     	if(!memberShip.isUserOnline(p.getRemetente())){
-    		System.out.println("User offline");
     		return;
     	}
-    	System.out.println("entrei");
     	UtilizadorOnline user = memberShip.getUser(p.getRemetente());
     	Servidor.getInstance().responder(relatorio, user.getPorto(), user.getIP(), user.getUsername());
     	System.out.println("Resposta para o pedido " + p.getIdPedido() + " enviada!");

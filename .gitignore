@@ -6,3 +6,5 @@
 *.ear
 /Mensagens/nbproject/private/
 /Servidor/nbproject/private/
+/Mensagens/build/
+/Servidor/build/

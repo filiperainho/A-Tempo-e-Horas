@@ -34,12 +34,10 @@ public class UDPservidor {
         return receivePacket;
     }
 
-    public void write(byte[] mensagemBytes, int porto, InetAddress ip) throws IOException{
+    public synchronized void write(byte[] mensagemBytes, int porto, InetAddress ip) throws IOException{
         DatagramPacket packet = new DatagramPacket(mensagemBytes, mensagemBytes.length, ip, porto);
         
-        synchronized (socket) {
-        	socket.send(packet);
-        }
+        socket.send(packet);
     }
     
     

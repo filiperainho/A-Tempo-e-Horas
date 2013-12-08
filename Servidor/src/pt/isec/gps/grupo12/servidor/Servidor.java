@@ -18,24 +18,22 @@ public class Servidor {
 			this.socket = new UDPservidor(new DatagramSocket(Constantes.PORTO_SERVIDOR));
 			System.out.println("Socket UDP criado com sucesso!");
 		} catch (SocketException e) {
-			System.err.println("Socket UDP nï¿½o foi criado com sucesso!");
+			System.err.println("Socket UDP não foi criado com sucesso!");
 			System.exit(-5);
 		}
 		System.out.println("Servidor criado!");
 	}
 	
 	public void startLoop(){
-		System.out.println("Iniciado ciclo de leitura de mensagens!");
+		System.out.println("Iniciado ciclo de leitura de mensagens!\n\n");
 		while(true){
 			try {
 				DatagramPacket readPacket = socket.read();
 				Object read;
 				
-				System.out.println("A ler mensagem!");
 				read = UDPservidor.transformByteToObject(readPacket);
 			
 				if(read instanceof Mensagem){
-					System.out.println("Recebida Mensagem!");
 					reencaminharMensagem((Mensagem)read, readPacket);
 				}
 				

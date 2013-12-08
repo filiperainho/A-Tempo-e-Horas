@@ -18,6 +18,7 @@ import java.util.List;
 
 import pt.isec.gps.grupo12.mensagens.Constantes;
 import pt.isec.gps.grupo12.mensagens.MAdicionarContato;
+import pt.isec.gps.grupo12.mensagens.MConfirmacaoRecepcao;
 import pt.isec.gps.grupo12.mensagens.MEnviarCor;
 import pt.isec.gps.grupo12.mensagens.MEstadoLogin;
 import pt.isec.gps.grupo12.mensagens.MLogin;
@@ -104,11 +105,27 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	{
     		String remetente = ((MReencaminharCor) m).getRemetente();
     		if(fonteDadosCliente.contatoExiste(userLogged, remetente)){
-    			recebeMensagem.corRecebida(remetente, ((MReencaminharCor) m).getRgb());
+    			MConfirmacaoRecepcao confirmacaoRecepcao = new MConfirmacaoRecepcao(((MReencaminharCor) m).getCodPedido(), userLogged, true);
+				try {
+					byte[] enviar = UDPcliente.transformObjectToByte(confirmacaoRecepcao);
+					socket.write(enviar);
+					recebeMensagem.corRecebida(remetente, ((MReencaminharCor) m).getRgb());
+				} catch (IOException e) {
+					recebeMensagem.erroComunicacao();
+					terminarServico();
+				}
+    		} else {
+    			MConfirmacaoRecepcao confirmacaoRecepcao = new MConfirmacaoRecepcao(((MReencaminharCor) m).getCodPedido(), userLogged, false);
+				try {
+					byte[] enviar = UDPcliente.transformObjectToByte(confirmacaoRecepcao);
+					socket.write(enviar);
+				} catch (IOException e) {
+					recebeMensagem.erroComunicacao();
+					terminarServico();
+				}
     		}
     	}
-    	else if(m instanceof MRelatorio)
-    	{
+    	else if(m instanceof MRelatorio) {
     		recebeMensagem.relatorioRecebido(((MRelatorio) m).getReceberam(),
     				((MRelatorio) m).getNaoReceberam(),
     				((MRelatorio) m).getOffiline(), 
@@ -117,8 +134,8 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
     	
     	else if(m instanceof MRespostaAdicaoContato){
     		if(((MRespostaAdicaoContato)m).getResposta()){
-    			fonteDadosCliente.adicionarContato(userLogged, ((MRespostaAdicaoContato)m).getUserName(), ((MRespostaAdicaoContato)m).getNome());
-    			recebeMensagem.adicaoDeContato(true);
+    			fonteDadosCliente.adicionarContato(userLogged, ((MRespostaAdicaoContato)m).getNome(), ((MRespostaAdicaoContato)m).getUserName());
+    			recebeMensagem.adicaoDeContato(true); 
     		}
     		else{
     			recebeMensagem.adicaoDeContato(false);
@@ -220,7 +237,6 @@ public class TrataMensagens extends Thread implements EnviarMensagem{
 				} catch (InterruptedException e) {}
     			if(tempo > 0){
     				--tempo;
-    				System.out.println(" ::" + tempo);
     				continue;
     			}
     			synchronized (contaMensagens) {

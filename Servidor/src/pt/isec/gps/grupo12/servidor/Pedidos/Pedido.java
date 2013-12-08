@@ -48,8 +48,9 @@ public class Pedido {
     public void addToIgnoraram(String username) {
     	if(username == null)
     		return;
-    	
-    	ignoraramMensagem.add(username);
+    	if(naoResponderam.remove(username)){
+    		ignoraramMensagem.add(username);
+    	}
     }
     
     public void incrementeSinalizacoes() {
@@ -57,18 +58,17 @@ public class Pedido {
         if(sinalizacoes == Constantes.MAXIMO_SINALIZACOES_SERVIDOR){
         	this.isDone = true;
         }
-        System.out.println(" ::" + sinalizacoes + " " + isDone);
     }
     
     public Pedido(long IdPedido, String remetente, List<String> naoResponderam, String corRGB) {
     	this.idPedido = IdPedido;
     	this.remetente = remetente;
-    	this.naoResponderam = new ArrayList<>(naoResponderam);
     	this.corRGB = corRGB;
-    	this.naoResponderam = new ArrayList<>();
+    	this.isDone = false;
+    	this.naoResponderam = new ArrayList<>(naoResponderam);
+    	this.responderam = new ArrayList<>();
     	this.offline = new ArrayList<>();
     	this.ignoraramMensagem = new ArrayList<>();
-    	this.isDone = false;
     }
     
     public boolean getIsDone(){
