@@ -12,8 +12,8 @@ import java.util.List;
 
 
 public class MEnviarCor extends Mensagem {
-	public static String COR_VERMELHO = "#FF0000";
-	public static String COR_AMARELO = "#FFFF00";
+	public static final String COR_VERMELHO = "#FF0000";
+	public static final String COR_AMARELO = "#FFFF00";
     private String rgb;
     private String remetente;
     private List<String> destinatarios;
